@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import xgboost as xgb
+import lightgbm as lgb # Menggunakan LightGBM
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler
@@ -10,7 +10,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning, module='sklearn')
 
 # ================================
-# 1️⃣ & 2️⃣ (Memuat & Menyesuaikan Data)
+# Bagian 1, 2, 3, 4 (Memuat & Feature Engineering) tidak berubah
 # ================================
 print("📊 Memuat data pertandingan historis dari Kaggle...")
 try:
@@ -31,9 +31,6 @@ hist_df['Date'] = pd.to_datetime(hist_df['Date'], format='%d/%m/%Y')
 hist_df = hist_df.sort_values(by='Date').reset_index(drop=True)
 print("✅ Data berhasil dibersihkan dan disesuaikan.")
 
-# ================================
-# 3️⃣ Feature Engineering 'Team Form'
-# ================================
 print("\n🚀 Membuat fitur 'Team Form' (Performa Terkini)...")
 team_stats = []
 for index, row in hist_df.iterrows():
@@ -52,9 +49,6 @@ hist_df = pd.merge(hist_df, away_rolling_stats, left_on=['Date', 'Away'], right_
 hist_df.dropna(inplace=True)
 print("✅ Fitur 'Team Form' yang lebih lengkap berhasil dibuat.")
 
-# ================================
-# 4️⃣ Feature Engineering H2H
-# ================================
 print("\n🛠️  Membuat fitur Head-to-Head (H2H)...")
 def calculate_h2h_stats(home_team, away_team, past_matches_df):
     h2h_matches = past_matches_df[((past_matches_df['Home'] == home_team) & (past_matches_df['Away'] == away_team)) | ((past_matches_df['Home'] == away_team) & (past_matches_df['Away'] == home_team))]
@@ -62,17 +56,10 @@ def calculate_h2h_stats(home_team, away_team, past_matches_df):
     if h2h_matches.empty: return {'h2h_home_wins': 0, 'h2h_away_wins': 0, 'h2h_draws': 0}
     for _, row in h2h_matches.iterrows():
         if row['HomeGoals'] > row['AwayGoals']:
-            if row['Home'] == home_team:
-                home_wins += 1
-            else:
-                away_wins += 1
+            if row['Home'] == home_team: home_wins += 1; else: away_wins += 1
         elif row['AwayGoals'] > row['HomeGoals']:
-            if row['Away'] == away_team:
-                away_wins += 1
-            else:
-                home_wins += 1
-        else:
-            draws += 1
+            if row['Away'] == away_team: away_wins += 1; else: home_wins += 1
+        else: draws += 1
     return {'h2h_home_wins': home_wins, 'h2h_away_wins': away_wins, 'h2h_draws': draws}
 h2h_results = []
 for index in hist_df.index:
@@ -84,7 +71,7 @@ hist_df = pd.concat([hist_df, pd.DataFrame(h2h_results, index=hist_df.index)], a
 print("✅ Fitur H2H berhasil ditambahkan.")
 
 # ================================
-# 5️⃣ Training & Evaluasi dengan MODEL YANG DI-TUNING
+# 5️⃣ Training & Evaluasi dengan MODEL LIGHTGBM
 # ================================
 print("\n⚙️ Mempersiapkan data untuk training model...")
 def get_result(row):
@@ -107,25 +94,19 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 print("✅ Fitur berhasil di-scale.")
 
-print("\n🧠 Melatih model XGBoost yang sudah di-Tuning...")
-# === PERUBAHAN: Menambahkan Hyperparameter untuk Tuning ===
-model = xgb.XGBClassifier(
-    n_estimators=1000,         # Tambah jumlah pohon untuk belajar lebih detail
-    learning_rate=0.01,        # Perkecil learning rate agar belajar lebih hati-hati
-    max_depth=3,               # Batasi kedalaman pohon agar tidak terlalu spesifik
-    subsample=0.8,             # Gunakan 80% data per pohon untuk mencegah overfitting
-    colsample_bytree=0.8,      # Gunakan 80% fitur per pohon
-    gamma=0.1,                 # Regularisasi untuk "menghukum" model yang terlalu kompleks
-    random_state=42,
-    objective='multi:softprob',
-    eval_metric='mlogloss',
-    use_label_encoder=False
+print("\n🧠 Melatih model LightGBM Classifier...")
+# === PERUBAHAN: Mengganti model dengan LightGBM ===
+model = lgb.LGBMClassifier(
+    n_estimators=1000,
+    learning_rate=0.01,
+    objective='multiclass',
+    random_state=42
 )
 model.fit(X_train_scaled, y_train)
 print("✅ Model berhasil dilatih.")
-# =======================================================
+# ===============================================
 
-print("\n⚖️ Mengevaluasi akurasi model yang sudah di-Tuning...")
+print("\n⚖️ Mengevaluasi akurasi model LightGBM...")
 y_pred = model.predict(X_test_scaled)
 acc = accuracy_score(y_test, y_pred)
 print(f"🎯 Akurasi Model Secara Keseluruhan: {acc*100:.2f}%")
@@ -133,7 +114,7 @@ print("\nLaporan Detail Kinerja Model:\n")
 print(classification_report(y_test, y_pred, target_names=['Menang Tamu', 'Menang Tuan Rumah', 'Seri']))
 
 # ================================
-# 6️⃣ Fungsi Prediksi
+# 6️⃣ & 7️⃣ Fungsi Prediksi & Contoh (Tidak berubah)
 # ================================
 def predict_match(home_team_input, away_team_input, historical_df, model, scaler):
     print("\n" + "="*40); print(f"🔮 PREDIKSI: {home_team_input} vs {away_team_input}"); print("="*40)
@@ -146,18 +127,9 @@ def predict_match(home_team_input, away_team_input, historical_df, model, scaler
     input_features_raw = np.array([form_values + h2h_values]); input_features_scaled = scaler.transform(input_features_raw)
     probs = model.predict_proba(input_features_scaled)[0]; p_away, p_home, p_draw = probs[0], probs[1], probs[2]
     print("\n📈 Probabilitas Hasil:"); print(f"   - 🏠 {home_team_input} Menang: {p_home*100:.2f}%"); print(f"   - 🚗 {away_team_input} Menang: {p_away*100:.2f}%"); print(f"   - 🤝 Seri            : {p_draw*100:.2f}%")
-    
-    if p_home > max(p_draw, p_away):
-        conclusion = f"{home_team_input} kemungkinan besar akan menang."
-    elif p_away > max(p_home, p_draw):
-        conclusion = f"{away_team_input} kemungkinan besar akan menang."
-    else:
-        conclusion = "Pertandingan ini kemungkinan besar akan berakhir seri."
+    if p_home > max(p_draw, p_away): conclusion = f"{home_team_input} kemungkinan besar akan menang."; elif p_away > max(p_home, p_draw): conclusion = f"{away_team_input} kemungkinan besar akan menang."; else: conclusion = "Pertandingan ini kemungkinan besar akan berakhir seri."
     print(f"\n💡 Kesimpulan: {conclusion}")
 
-# ================================
-# 7️⃣ Jalankan Contoh Prediksi
-# ================================
 predict_match("Arsenal", "Man Utd", hist_df, model, scaler)
 predict_match("Liverpool", "Man City", hist_df, model, scaler)
 predict_match("Chelsea", "Tottenham", hist_df, model, scaler)
