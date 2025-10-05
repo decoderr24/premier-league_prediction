@@ -145,4 +145,4 @@ def predict_match(home_team_input, away_team_input, historical_df, model, scaler
 predict_match("Arsenal", "Man Utd", hist_df, model, scaler)
 predict_match("Liverpool", "Man City", hist_df, model, scaler)
 predict_match("Chelsea", "Tottenham", hist_df, model, scaler)
-predict_match("Man Utd", "Liverpool", hist_df, model, scaler)
+predict_match("Man Utd", "Tottenham, hist_df, model, scaler)
