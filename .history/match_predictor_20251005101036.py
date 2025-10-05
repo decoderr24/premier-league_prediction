@@ -81,8 +81,8 @@ def predict_match(home_team, away_team, passing_df=None):
     
     # --- Data dasar asumsi form ---
     team_stats = {
-        "Man City": {"form": 0.85, "goals": 2.3, "concede": 0.7, "home_adv": 1.2},
-        "Brentford": {"form": 0.45, "goals": 1.1, "concede": 1.5, "home_adv": 1.0},
+        "Brighton": {"form": 0.68, "goals": 1.9, "concede": 1.1, "home_adv": 1.1},
+        "Wolves": {"form": 0.42, "goals": 0.8, "concede": 1.7, "home_adv": 0.9},
     }
 
     if home_team not in team_stats or away_team not in team_stats:

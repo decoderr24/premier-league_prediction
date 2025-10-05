@@ -83,6 +83,7 @@ def predict_match(home_team, away_team, passing_df=None):
     team_stats = {
         "Man City": {"form": 0.85, "goals": 2.3, "concede": 0.7, "home_adv": 1.2},
         "Brentford": {"form": 0.45, "goals": 1.1, "concede": 1.5, "home_adv": 1.0},
+
     }
 
     if home_team not in team_stats or away_team not in team_stats:
