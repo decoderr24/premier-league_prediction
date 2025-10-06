@@ -206,6 +206,7 @@ def predict_match(home_team_input, away_team_input, model=final_model, team_roll
 try:
     predict_match("Aston Villa", "Burnley")
     predict_match("Wolves", "Brighton")
+    predict_match("Man Utd", "Arsenal")
 except Exception as e:
     print(f"Info: contoh prediksi gagal - {e}")
 
