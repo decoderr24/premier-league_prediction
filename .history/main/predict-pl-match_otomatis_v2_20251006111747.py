@@ -24,7 +24,7 @@ except ImportError:
 # BAGIAN 1, 2, 3, 4, 5 (LOAD DATA & FEATURE ENGINEERING) - TIDAK BERUBAH
 # =============================================================================
 print("📊 Memuat data...")
-df = pd.read_csv("csv/epl-training.csv", encoding='ISO-8859-1', low_memory=False)
+df = pd.read_csv("epl-training.csv", encoding='ISO-8859-1', low_memory=False)
 expected = ['Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HS', 'AS', 'HST', 'AST']
 df = df[expected].copy()
 df.rename(columns={'HomeTeam': 'Home', 'AwayTeam': 'Away', 'FTHG': 'HomeGoals', 'FTAG': 'AwayGoals', 'HS': 'HomeShots', 'AS': 'AwayShots', 'HST': 'HomeShotsOnTarget', 'AST': 'AwayShotsOnTarget'}, inplace=True)
