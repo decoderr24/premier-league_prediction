@@ -25,11 +25,11 @@ DISCLAIMER!! **Football is UNPREDICTABLE**
 
 * **Bahasa Pemrograman**: Python 3.x
 * **Library Utama**:
-    * **Pandas**: Untuk manipulasi dan analisis data.
-    * **NumPy**: Untuk komputasi numerik.
-    * **Scikit-learn**: Untuk membangun dan mengevaluasi model machine learning.
-    * **Matplotlib / Seaborn**: Untuk visualisasi data.
-    * **[Tambahkan library lain jika ada, misal: Jupyter, Flask, Streamlit, etc.]**
+    * **Pandas**
+    * **NumPy**
+    * **Scikit-learn**
+    * **Matplotlib / Seaborn**
+    * ETC
 
 ## 📂 Struktur Repositori
 
@@ -107,6 +107,7 @@ Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file `LICENSE` untuk detail 
 
 
  Project by **[decoderr24]**
+
 
 
 
