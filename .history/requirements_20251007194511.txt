@@ -1,0 +1,8 @@
+selenium
+webdriver-manager
+pandas
+numpy
+scikit-learn
+joblib
+lxml          # Diperlukan oleh pandas.read_html untuk mem-parsing tabel HTML
+xgboost

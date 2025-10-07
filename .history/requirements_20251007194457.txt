@@ -1,0 +1,14 @@
+# ===================================================
+# == Premier League Prediction Pro# Web Scraping & Browser Automation (untuk mengambil data dari FBREF)
+selenium
+webdriver-manager
+
+# Core Data Science & Machine Learning Stack
+pandas
+numpy
+scikit-learn
+joblib
+lxml          # Diperlukan oleh pandas.read_html untuk mem-parsing tabel HTML
+
+# High-Performance Modeling (Model XGBoost)
+xgboost
