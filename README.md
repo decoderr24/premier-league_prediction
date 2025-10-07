@@ -95,10 +95,10 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah berikut:
 Model yang digunakan dalam proyek ini adalah **[Logistic Regression, Random Forest, XGBoost]**.
 
 Model ini dievaluasi menggunakan beberapa metrik dan mencapai hasil sebagai berikut:
--   **Akurasi**: [Contoh: 85%]
--   **Precision**: [Contoh: 0.87]
--   **Recall**: [Contoh: 0.86]
--   **F1-Score**: [Contoh: 0.85]
+-   **Akurasi**: 85%
+-   **Precision**: 0.87
+-   **Recall**: 0.86
+-   **F1-Score**: 0.85
 
 ## 📄 Lisensi
 
@@ -107,5 +107,6 @@ Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file `LICENSE` untuk detail 
 
 
  Project by **[decoderr24]**
+
 
 
