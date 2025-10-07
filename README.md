@@ -9,7 +9,9 @@
 
 Proyek ini adalah sebuah model *machine learning* yang bertujuan untuk memprediksi hasil pertandingan Liga Utama Inggris (Premier League). Model ini dibangun menggunakan data historis pertandingan untuk menganalisis berbagai faktor dan memprediksi apakah hasil akhir pertandingan akan menjadi kemenangan bagi tim tuan rumah (Home Win), kemenangan bagi tim tandang (Away Win), atau seri (Draw).
 
-Tujuan utama dari proyek ini adalah untuk [Sebutkan tujuan Anda, contoh: "mengeksplorasi faktor-faktor yang paling berpengaruh dalam menentukan hasil pertandingan sepak bola" atau "membangun model prediktif dengan akurasi yang tinggi"].
+Tujuan utama dari proyek ini adalah untuk "mengeksplorasi faktor-faktor yang paling berpengaruh dalam menentukan hasil pertandingan sepak bola"
+
+DISCLAIMER!! **Football is UNPREDICTABLE**
 
 ## ✨ Fitur Utama
 
@@ -105,3 +107,5 @@ Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file `LICENSE` untuk detail 
 
 
  Project by **[decoderr24]**
+
+
